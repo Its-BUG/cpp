@@ -2,12 +2,9 @@
 
 bool is_num(std::string& token)
 {
-    if(token.size() > 1)
-        throw std::runtime_error("Error: check your num?\n");
-    if(token != "*" || token != "+" || token != "/" || token != "-")
-        return true ;
-    else
-        return false;
+    if (token.size() != 1)
+        throw std::runtime_error("Error");
+    return std::isdigit(token[0]);
 }
 
 int toInt(std::string& token)
@@ -15,9 +12,8 @@ int toInt(std::string& token)
     std::stringstream ss(token) ;
     int num ;
     ss >> num;
-    if(ss.fail() && !ss.eof())
+    if(ss.fail() || !ss.eof())
     {
-        std::cout << "hna->>>";
         throw std::runtime_error("Error: check your num!\n");
     }
     else if(num > 9)
@@ -58,7 +54,7 @@ void RPN::check_token(std::string& line)
             s.pop();
             int b = s.top();
             s.pop();
-            s.push(apply(a,b,token));
+            s.push(apply(b,a,token));
         }
     }
 }
