@@ -36,6 +36,7 @@ int apply(int a , int b, std::string& op)
     return res ;
 
 }
+
 void RPN::check_token(std::string& line)
 {
     std::stringstream ss(line);
@@ -45,7 +46,7 @@ void RPN::check_token(std::string& line)
         if(is_num(token))
         {
             int n ;
-            n = toInt(token);       
+            n = toInt(token);    
             s.push(n);
         }
         else if(is_operator(token))
