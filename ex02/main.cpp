@@ -9,9 +9,10 @@ int main(int argc, char **argv)
         
         PmergeMe pmergeMe;
         pmergeMe.parseInput(argc, argv);
+        pmergeMe.print_vector(); 
+        std::cout << "After sorting: \n";
         pmergeMe.mergeInsertSort(pmergeMe.vec);
-        //pmergeMe.print_vector();
-        //pmergeMe.mergeInsertSort(pmergeMe.vec, 0, pmergeMe.vec.size() - 1);
+        pmergeMe.print_vector();
     }
     catch (const std::exception &e)
     {
