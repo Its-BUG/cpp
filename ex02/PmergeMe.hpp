@@ -11,6 +11,7 @@ class PmergeMe
 {
     public:
         std::vector<int> vec;
+        std::deque<int> deq;
 
     public:
 
@@ -21,4 +22,5 @@ class PmergeMe
         void make_pairs_deque(std::deque<std::pair<int, int> >& pairs ,std::deque<int>& deq ,bool& has_odd , int& odd_num);
         std::vector<int> jacobInsertOrder(size_t n);
         std::vector<int> mergeInsertSort(std::vector<int> vec);
+        std::deque<int> mergeInsertSort_deque(std::deque<int> deq);
     };

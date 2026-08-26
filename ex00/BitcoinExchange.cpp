@@ -134,12 +134,3 @@ void BitcoinExchange::processInput(const std::string& filename)
         }
     }
 }
-
-
-
-
-
-
-
-
-

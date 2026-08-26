@@ -12,10 +12,10 @@ void PmergeMe::parseInput(int argc, char **argv)
                 throw std::invalid_argument("Error: Invalid input. Invalid number.");
             if (num < 0)
                 throw std::invalid_argument("Error: Invalid input. Negative number.");
-            if(std::find(vec.begin(), vec.end(), num) != vec.end())
+            if(std::find(vec.begin(), vec.end(), num) != vec.end() || std::find(deq.begin(), deq.end(), num) != deq.end())
                 throw std::invalid_argument("Error: Invalid input. Duplicate number.");
             vec.push_back(num);
-    
+            deq.push_back(num);
     }
 }
 
@@ -142,4 +142,67 @@ std::vector<int> PmergeMe::mergeInsertSort(std::vector<int> vec)
 size_t PmergeMe::get_size()
 {
     return vec.size();  
+}
+
+                ////// Additional function to make pairs for deque //////
+
+void PmergeMe::make_pairs_deque(std::deque<std::pair<int, int> >& pairs, std::deque<int>& deq, bool& has_odd, int& odd_num)
+{
+    size_t i = 0;
+    for (; i < deq.size() - 1; i += 2)
+    {
+        if (deq[i] < deq[i + 1])
+            pairs.push_back(std::make_pair(deq[i], deq[i + 1]));
+        else
+            pairs.push_back(std::make_pair(deq[i + 1], deq[i]));
+    }
+    if (deq.size() % 2 != 0)
+    {
+        has_odd = true;
+        odd_num = deq.back();
+    }
+    else
+    {
+        has_odd = false;
+    }
+}
+
+std::deque<int> PmergeMe::mergeInsertSort_deque(std::deque<int> deq)
+{
+    if (deq.size() <= 1)
+        return deq;
+
+    std::deque<std::pair<int, int> > pairs;
+    bool has_odd = false;
+    int odd_num = 0;
+
+    make_pairs_deque(pairs, deq, has_odd, odd_num);
+    std::sort(pairs.begin(), pairs.end(), compairpairs);
+
+    std::deque<int> larger;    
+    for (size_t i = 0; i < pairs.size(); ++i)
+        larger.push_back(pairs[i].second);
+    
+    std::deque<int> main_chain = mergeInsertSort_deque(larger);
+    main_chain.push_front(pairs[0].first);
+
+    std::vector<int> order = jacobInsertOrder(pairs.size());
+
+    for(size_t i = 0; i < order.size(); ++i)
+    {
+        size_t index = order[i] ;
+            int element_to_insert = pairs[index - 1].first;
+            int element_paired = pairs[index - 1].second;
+
+        std::deque<int>::iterator itp = std::find(main_chain.begin(), main_chain.end(), element_paired);
+        std::deque<int>::iterator it = std::lower_bound(main_chain.begin(), itp , element_to_insert);
+        main_chain.insert(it, element_to_insert);
+    }
+    if (has_odd)
+    {
+        std::deque<int>::iterator it = std::lower_bound(main_chain.begin(), main_chain.end(), odd_num);
+        main_chain.insert(it, odd_num);
+    }
+    this->deq = main_chain;
+    return main_chain;
 }
