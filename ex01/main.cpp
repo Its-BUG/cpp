@@ -6,7 +6,7 @@ int main(int argc , char **argv)
     {
         (void)argc ;
         if(argc != 2)
-            throw std::runtime_error("Error check your argument\n");
+            throw std::runtime_error("Error check your argument");
         RPN a ;
         std::string line ;
         line = argv[1];

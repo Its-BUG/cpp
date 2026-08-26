@@ -14,10 +14,10 @@ int toInt(std::string& token)
     ss >> num;
     if(ss.fail() || !ss.eof())
     {
-        throw std::runtime_error("Error: check your num!\n");
+        throw std::runtime_error("Error: check your num!");
     }
     else if(num > 9)
-        throw std::runtime_error("Error: check your num!\n");
+        throw std::runtime_error("Error: check your num!");
     return num ;
 }
 
@@ -37,6 +37,17 @@ int apply(int a , int b, std::string& op)
 
 }
 
+void RPN::print_stack()
+{
+    std::stack<int> temp = s;
+    while (!temp.empty())
+    {
+        std::cout << temp.top() << " ";
+        temp.pop();
+    }
+    std::cout << std::endl;
+}
+
 void RPN::check_token(std::string& line)
 {
     std::stringstream ss(line);
@@ -46,16 +57,24 @@ void RPN::check_token(std::string& line)
         if(is_num(token))
         {
             int n ;
-            n = toInt(token);    
+            n = toInt(token);  
             s.push(n);
         }
-        else if(is_operator(token))
+        else if(is_operator(token) && s.size() >= 2)
         {
             int a = s.top();
             s.pop();
             int b = s.top();
             s.pop();
             s.push(apply(b,a,token));
+        }
+        else if(is_operator(token) && s.size() < 2)
+        {
+            throw std::runtime_error("Error: check your operator!");
+        }
+        else
+        {
+            throw std::runtime_error("Error: check your token!");
         }
     }
 }
