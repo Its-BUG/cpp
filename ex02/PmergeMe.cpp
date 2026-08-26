@@ -138,3 +138,8 @@ std::vector<int> PmergeMe::mergeInsertSort(std::vector<int> vec)
     this->vec = main_chain;
     return main_chain;
 }
+
+size_t PmergeMe::get_size()
+{
+    return vec.size();  
+}

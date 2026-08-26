@@ -9,10 +9,16 @@ int main(int argc, char **argv)
         
         PmergeMe pmergeMe;
         pmergeMe.parseInput(argc, argv);
-        pmergeMe.print_vector(); 
-        std::cout << "After sorting: \n";
-        pmergeMe.mergeInsertSort(pmergeMe.vec);
+        std::cout << "Before: ";
         pmergeMe.print_vector();
+        std::cout << "After: ";
+        clock_t start = clock();
+        pmergeMe.mergeInsertSort(pmergeMe.vec);
+        clock_t end = clock();
+        double elapsed_time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+        double elapsed_time_microseconds = elapsed_time * 1000000.0;
+        pmergeMe.print_vector();
+        std::cout << "Time to process a range of " << pmergeMe.get_size() << " elements with std::vector : " << elapsed_time_microseconds << " us" << std::endl;
     }
     catch (const std::exception &e)
     {
