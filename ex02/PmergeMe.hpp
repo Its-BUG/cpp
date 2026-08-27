@@ -14,6 +14,10 @@ class PmergeMe
         std::deque<int> deq;
 
     public:
+    PmergeMe();
+    PmergeMe(PmergeMe& o);
+    PmergeMe& operator=(PmergeMe& o);
+    ~PmergeMe();
 
         size_t get_size();
         void print_vector();

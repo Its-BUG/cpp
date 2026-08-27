@@ -1,5 +1,31 @@
 #include "BitcoinExchange.hpp"
 
+BitcoinExchange::BitcoinExchange()
+{
+}
+
+BitcoinExchange::BitcoinExchange(std::map<std::string, double>& db)
+{
+    this->db = db ;
+}
+
+BitcoinExchange::BitcoinExchange(BitcoinExchange& o)
+{
+    this->db = o.db ;
+}
+
+BitcoinExchange& BitcoinExchange::operator=(BitcoinExchange& o)
+{
+    if(this != &o)
+        this->db = o.db ;
+    return *this ;
+}
+
+BitcoinExchange::~BitcoinExchange()
+{
+    db.clear();
+}
+
 double BitcoinExchange::Todouble(std::string& value)
 {
     std::stringstream ss(value);

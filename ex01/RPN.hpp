@@ -11,7 +11,11 @@ class RPN
     std::stack<int> s ;
 
     public:
-    
+    RPN() ;
+    RPN(RPN& o) ;
+    RPN& operator=(RPN& o) ;
+    ~RPN() ;
+     
     void check_token(std::string& line);
     void print_stack();
 };

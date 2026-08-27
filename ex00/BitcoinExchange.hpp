@@ -14,12 +14,12 @@ class BitcoinExchange
     std::map<std::string, double> db ;
 
     public:
-    /*BitcoinExchange();
+    BitcoinExchange();
     BitcoinExchange(std::map<std::string, double>& db);
     BitcoinExchange(BitcoinExchange& o);
     BitcoinExchange& operator=(BitcoinExchange& o);
-    */
-   
+    ~BitcoinExchange() ;
+
     std::map<std::string, double>& loaddatabase(std::string filename);
     void processInput(const std::string& filename);
     private:

@@ -1,5 +1,29 @@
 #include "PmergeMe.hpp"
 
+PmergeMe::PmergeMe()
+{
+}
+
+PmergeMe::PmergeMe(PmergeMe& o)
+{
+    this->vec = o.vec ;
+    this->deq = o.deq ;
+}
+
+PmergeMe& PmergeMe::operator=(PmergeMe& o)
+{
+    if(this != &o)
+    {
+        this->vec = o.vec ;
+        this->deq = o.deq ;
+    }
+    return *this ;
+}
+
+PmergeMe::~PmergeMe()
+{
+}
+
 void PmergeMe::parseInput(int argc, char **argv)
 {
     for (int i = 1; i < argc; ++i)
@@ -68,7 +92,7 @@ std::vector<int> PmergeMe::jacobInsertOrder(size_t n)
     if (n < 2)
         return order; // only b1 exists, nothing else to insert
 
-    // Build Jacobsthal sequence until it reaches/exceeds n
+    // Build Jacobsthal sequence 
     std::vector<size_t> J;
     J.push_back(0);
     J.push_back(1);
@@ -81,7 +105,7 @@ std::vector<int> PmergeMe::jacobInsertOrder(size_t n)
     {
         size_t boundary = J[i];
         if (boundary > n)
-            boundary = n; // cap at however many pend elements we actually have
+            boundary = n; 
 
         for (size_t k = boundary; k > prevBoundary; --k)
             order.push_back(k);
@@ -93,14 +117,9 @@ std::vector<int> PmergeMe::jacobInsertOrder(size_t n)
     return order;
 }
 
-bool compairpairs(const std::pair<int, int>& a, const std::pair<int, int>& b)
-{
-    return a.second < b.second;
-}
-
 std::vector<int> PmergeMe::mergeInsertSort(std::vector<int> vec)
 {
-    if (vec.size() <= 1)
+    if (vec.size() <= 2)
         return vec;
 
     std::vector<std::pair<int, int> > pairs;
@@ -109,14 +128,13 @@ std::vector<int> PmergeMe::mergeInsertSort(std::vector<int> vec)
 
     make_pairs(pairs, vec, has_odd, odd_num);
 
-    std::sort(pairs.begin(), pairs.end(), compairpairs);
 
     std::vector<int> larger;
     for (size_t i = 0; i < pairs.size(); ++i)
         larger.push_back(pairs[i].second);
-    
+
+    larger.insert(larger.begin(), pairs[0].first);
     std::vector<int> main_chain = mergeInsertSort(larger);
-    main_chain.insert(main_chain.begin(), pairs[0].first);
 
     std::vector<int> order = jacobInsertOrder(pairs.size());
 
@@ -130,6 +148,7 @@ std::vector<int> PmergeMe::mergeInsertSort(std::vector<int> vec)
         std::vector<int>::iterator it = std::lower_bound(main_chain.begin(), itp , element_to_insert);
         main_chain.insert(it, element_to_insert);
     }
+
     if (has_odd)
     {
         std::vector<int>::iterator it = std::lower_bound(main_chain.begin(), main_chain.end(), odd_num);
@@ -169,7 +188,7 @@ void PmergeMe::make_pairs_deque(std::deque<std::pair<int, int> >& pairs, std::de
 
 std::deque<int> PmergeMe::mergeInsertSort_deque(std::deque<int> deq)
 {
-    if (deq.size() <= 1)
+    if (deq.size() <= 2)
         return deq;
 
     std::deque<std::pair<int, int> > pairs;
@@ -177,14 +196,13 @@ std::deque<int> PmergeMe::mergeInsertSort_deque(std::deque<int> deq)
     int odd_num = 0;
 
     make_pairs_deque(pairs, deq, has_odd, odd_num);
-    std::sort(pairs.begin(), pairs.end(), compairpairs);
 
     std::deque<int> larger;    
     for (size_t i = 0; i < pairs.size(); ++i)
         larger.push_back(pairs[i].second);
-    
+
+    larger.insert(larger.begin(), pairs[0].first);
     std::deque<int> main_chain = mergeInsertSort_deque(larger);
-    main_chain.push_front(pairs[0].first);
 
     std::vector<int> order = jacobInsertOrder(pairs.size());
 

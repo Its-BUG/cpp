@@ -1,5 +1,27 @@
 #include "RPN.hpp"
 
+RPN::RPN()
+{
+}
+
+RPN::RPN(RPN& o)
+{
+    this->s = o.s ;
+}
+
+RPN& RPN::operator=(RPN& o)
+{
+    if(this != &o)
+        this->s = o.s ;
+    return *this ;
+}
+
+RPN::~RPN()
+{
+    while(!s.empty())
+        s.pop();
+}
+
 bool is_num(std::string& token)
 {
     if (token.size() != 1)
